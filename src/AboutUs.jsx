@@ -1,7 +1,12 @@
 const AboutUs = ()=> {
   return (
     <div>
-      TODO: Add some information about Us!
+      <h1>
+      Hello, and welcome to Stranger Things!!!
+      </h1>
+      <h4>
+      Here we have many strangers selling many things!
+      </h4>
     </div>
   );
 };

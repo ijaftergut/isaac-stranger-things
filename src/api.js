@@ -65,13 +65,27 @@ const login = async(credentials)=> {
   return loginWithToken();
 };
 
+const deletePost = async (postId) => {
+  const token = window.localStorage.getItem('token');
+  const response = await axios.delete(
+    `${BASE_URL}/posts/${postId}`,
+    {
+      headers: {
+        authorization: `Bearer ${token}`
+      }
+    }
+  );
+  return response.data.data.post;
+};
+
 const api = {
   logout,
   register,
   login,
   loginWithToken,
   fetchPosts,
-  createPost
+  createPost,
+  deletePost
 
 };
 

@@ -5,6 +5,7 @@ import CreatePost from './CreatePost';
 import Posts from './Posts';
 import Post from './Post';
 import AboutUs from './AboutUs';
+import ContactUs from './ContactUs';
 
 import { useNavigate, useParams, Link, Routes, Route } from 'react-router-dom';
 
@@ -69,6 +70,7 @@ function App() {
             </h1>
             <Link to='/posts/create'>Create A Post</Link>
             <Link to='/about_us'>About Us</Link>
+            <Link to='/contact_us'>Contact Us</Link>
             <Routes>
               <Route path='/posts/create' element={ <CreatePost createPost={ createPost } />} />
             </Routes>
@@ -78,6 +80,7 @@ function App() {
             <AuthForm submit={ register } txt='Register'/>
             <AuthForm submit={ login } txt='Login'/>
             <Link to='/about_us'>About Us</Link>
+            <Link to='/contact_us'>Contact Us</Link>
           </>
         )
       }
@@ -85,6 +88,7 @@ function App() {
       <Routes>
         <Route path='/posts/:id' element={ <Post posts={ posts } auth={ auth }/>} />
         <Route path='/about_us' element={ <AboutUs />} />
+        <Route path='/contact_us' element={ <ContactUs />} />
       </Routes>
     </>
   )
