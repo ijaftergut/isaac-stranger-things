@@ -1,27 +1,67 @@
-import { useState, useEffect } from 'react'
-import api from "./api"
-import { useParams, Link , useNavigate} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import api from "./api";
+import { useParams, Link, useNavigate } from 'react-router-dom';
 
-const Post = ({ posts, auth })=> {
+// const UpdatePost = ({ updatePost }) => {
+//   const [price, setPrice] = useState(0);
+//   const [description, setDescription] = useState('');
+//   const [title, setTitle] = useState('');
+//   const [location, setLocation] = useState('');
+//   const [error, setError] = useState('');
+
+//   const submit = async (ev) => {
+//     ev.preventDefault();
+//     try {
+//       const post = { price, title, description, location };
+//       await updatePost(post);
+//     } catch (ex) {
+//       if (ex.response) {
+//         setError(ex.response.data);
+//       } else {
+//         setError(ex.response);
+//       }
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <form onSubmit={submit}>
+//         {error ? JSON.stringify(error, null, 2) : null}
+//         <input placeholder='title' onChange={ev => setTitle(ev.target.value)} />
+//         <input placeholder='description' onChange={ev => setDescription(ev.target.value)} />
+//         <input placeholder='price' onChange={ev => setPrice(ev.target.value)} />
+//         <input placeholder='location' onChange={ev => setLocation(ev.target.value)} />
+//         <button>Update</button>
+//       </form>
+
+//     </div>
+//   );
+// };
+
+const Post = ({ posts, auth, setPosts }) => {
+  // const updatePost = async (post) => {
+  //   post = await api.updatePost(post);
+  //   setPosts([...posts, post]);
+  //   navigate(`/posts/${post._id}`);
+  // };
+
   const { id } = useParams();
   const navigate = useNavigate();
   const post = posts.find(post => post._id === id);
-  if(!post){
+
+  if (!post) {
     return null;
   }
+
   const handleDeletePost = async () => {
-    if(post){
     try {
       await api.deletePost(post._id);
-      setPosts(posts.filter(_post=> _post.id !== post._id));
+      await setPosts(posts.filter(_post => _post._id !== post._id));
     } catch (error) {
-
       console.error('Error deleting post:', error);
     }
-  }
- 
-  navigate("/posts")
-};
+    navigate("/");
+  };
 
   return (
     <div>
@@ -33,6 +73,11 @@ const Post = ({ posts, auth })=> {
       ) : (
         ''
       )}
+
+      {/* {auth._id === post.author._id && (
+        <UpdatePost updatePost={updatePost} />
+      )}     */}
+      <Link to='/'>Cancel</Link>
     </div>
   );
 };
