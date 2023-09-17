@@ -6,17 +6,19 @@ const BASE_URL = `https://strangers-things.herokuapp.com/api/${COHORT_NAME}`
 const logout = ()=> {
   window.localStorage.removeItem('token');
 }
-// const updatePost = async(postId)=> {
-//   const token = window.localStorage.getItem('token');
-//   const response = await axios.patch(
-//     `${BASE_URL}/posts/${postId}`,
-//     {
-//       headers: {
-//         authorization: `Bearer ${token}`
-//       }
-//     }
-//   );
-// };
+const updatePost = async(post)=> {
+  const token = window.localStorage.getItem('token');
+  const response = await axios.patch(
+    `${BASE_URL}/posts/${post.id}`,
+    { post },
+    {
+      headers: {
+        authorization: `Bearer ${token}`
+      }
+    }
+  );
+  return response.data.data.post
+};
 const register = async(credentials)=> {
   const response = await axios.post(
     `${BASE_URL}/users/register`,
@@ -96,7 +98,7 @@ const api = {
   fetchPosts,
   createPost,
   deletePost,
-  // updatePost
+  updatePost
 
 };
 

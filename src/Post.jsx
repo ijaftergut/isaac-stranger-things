@@ -2,48 +2,50 @@ import React, { useState, useEffect } from 'react';
 import api from "./api";
 import { useParams, Link, useNavigate } from 'react-router-dom';
 
-// const UpdatePost = ({ updatePost }) => {
-//   const [price, setPrice] = useState(0);
-//   const [description, setDescription] = useState('');
-//   const [title, setTitle] = useState('');
-//   const [location, setLocation] = useState('');
-//   const [error, setError] = useState('');
+const UpdatePost = ({ updatePost, post }) => {
+  console.log(post._id)
+  const [price, setPrice] = useState(post.price);
+  const [description, setDescription] = useState(post.description);
+  const [title, setTitle] = useState(post.title);
+  const [location, setLocation] = useState(post.location);
+  const [error, setError] = useState('');
+  const id = post._id
+  const submit = async (ev) => {
+    ev.preventDefault();
+    try {
+      const post = { price, title, description, location, id };
+      await updatePost(post);
+    } catch (ex) {
+      if (ex.response) {
+        setError(ex.response.data);
+      } else {
+        setError(ex.response);
+      }
+    }
+  };
 
-//   const submit = async (ev) => {
-//     ev.preventDefault();
-//     try {
-//       const post = { price, title, description, location };
-//       await updatePost(post);
-//     } catch (ex) {
-//       if (ex.response) {
-//         setError(ex.response.data);
-//       } else {
-//         setError(ex.response);
-//       }
-//     }
-//   };
+  return (
+    <div>
+      <form onSubmit={submit}>
+        {error ? JSON.stringify(error, null, 2) : null}
+        <input placeholder='title' onChange={ev => setTitle(ev.target.value)} />
+        <input placeholder='description' onChange={ev => setDescription(ev.target.value)} />
+        <input placeholder='price' onChange={ev => setPrice(ev.target.value)} />
+        <input placeholder='location' onChange={ev => setLocation(ev.target.value)} />
+        <button>Update</button>
+      </form>
 
-//   return (
-//     <div>
-//       <form onSubmit={submit}>
-//         {error ? JSON.stringify(error, null, 2) : null}
-//         <input placeholder='title' onChange={ev => setTitle(ev.target.value)} />
-//         <input placeholder='description' onChange={ev => setDescription(ev.target.value)} />
-//         <input placeholder='price' onChange={ev => setPrice(ev.target.value)} />
-//         <input placeholder='location' onChange={ev => setLocation(ev.target.value)} />
-//         <button>Update</button>
-//       </form>
-
-//     </div>
-//   );
-// };
+    </div>
+  );
+};
 
 const Post = ({ posts, auth, setPosts }) => {
-  // const updatePost = async (post) => {
-  //   post = await api.updatePost(post);
-  //   setPosts([...posts, post]);
-  //   navigate(`/posts/${post._id}`);
-  // };
+  const updatePost = async(post)=> {
+    post = await api.updatePost(post);
+    const updated = posts.map(item => item._id === post._id ? post : item)
+    console.log(updated)
+    setPosts([...updated])
+  };
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -74,9 +76,9 @@ const Post = ({ posts, auth, setPosts }) => {
         ''
       )}
 
-      {/* {auth._id === post.author._id && (
-        <UpdatePost updatePost={updatePost} />
-      )}     */}
+      {auth._id === post.author._id && (
+        <UpdatePost updatePost={updatePost} post={post}/>
+      )}    
       <Link to='/'>Cancel</Link>
     </div>
   );
